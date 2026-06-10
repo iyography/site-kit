@@ -1,0 +1,7 @@
+{
+  "name": "site-kit",
+  "displayName": "Site Kit",
+  "description": "Build a $10k-class animated website for your brand from one config: pick a scroll style, render bespoke video and images, ship a site to the CCC standard.",
+  "version": "1.0.0",
+  "author": { "name": "Claude Code Club", "url": "https://claudecodeclub.ai" }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "ccc-site-kit",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Build a $10k-class animated website from one config.",
+  "scripts": { "render": "node render.mjs", "build": "zsh build.sh" },
+  "license": "MIT"
+}

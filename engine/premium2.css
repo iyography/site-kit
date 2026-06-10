@@ -1,0 +1,67 @@
+/* premium2.css — shared interaction + craft layer for the CCC premium-site set.
+   Applies impeccable design laws: tinted neutrals (no pure #000/#fff), restrained motion
+   (transform/opacity only, ease-out-expo), subtle grain, custom cursor. Each site sets its
+   own OKLCH palette via :root overrides; this file only provides the universal mechanics. */
+
+*{box-sizing:border-box}
+html{scroll-behavior:auto}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+.lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}
+body{margin:0;cursor:none}
+@media (hover:none){body{cursor:auto}}
+
+/* ---- film grain (subtle, animated, very low opacity) ---- */
+.grain{position:fixed;inset:-50%;z-index:9990;pointer-events:none;opacity:.035;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation:grain 7s steps(6) infinite}
+@keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-6%,4%)}40%{transform:translate(4%,-6%)}60%{transform:translate(-4%,6%)}80%{transform:translate(6%,-4%)}100%{transform:translate(0,0)}}
+
+/* ---- custom cursor (dot + lerped ring) ---- */
+.cur,.cur-r{position:fixed;top:0;left:0;z-index:9999;pointer-events:none;border-radius:50%;will-change:transform;mix-blend-mode:difference}
+.cur{width:6px;height:6px;background:#fff;margin:-3px 0 0 -3px}
+.cur-r{width:22px;height:22px;border:1px solid rgba(255,255,255,.42);margin:-11px 0 0 -11px;transition:width .3s cubic-bezier(.22,1,.36,1),height .3s,opacity .3s,background .3s}
+.cur-r.hot{width:34px;height:34px;background:rgba(255,255,255,.07);border-color:transparent}
+@media (hover:none){.cur,.cur-r{display:none}}
+
+/* ---- nav top scrim: guarantees link legibility at scroll=0 over any hero, fades as nav goes solid ---- */
+nav::before{content:"";position:absolute;left:0;right:0;top:0;height:260%;z-index:-1;pointer-events:none;
+  background:linear-gradient(180deg,color-mix(in oklch,var(--bg) 68%,transparent),transparent);
+  opacity:1;transition:opacity .45s cubic-bezier(.16,1,.3,1)}
+nav.solid::before{opacity:0}
+
+/* ---- scroll progress bar ---- */
+.sprog{position:fixed;top:0;left:0;height:2px;width:0;z-index:9998;background:var(--accent,#fff);opacity:.9}
+
+/* ---- intro loader (load hesitation) ---- */
+.intro{position:fixed;inset:0;z-index:9995;display:flex;align-items:center;justify-content:center;
+  background:var(--bg,#0a0a0a);transition:opacity .9s cubic-bezier(.22,1,.36,1),visibility .9s}
+.intro.gone{opacity:0;visibility:hidden}
+.intro .ipct{font-family:var(--disp,sans-serif);font-weight:300;font-size:clamp(40px,9vw,140px);letter-spacing:-.03em;color:var(--ink,#eee);opacity:.92}
+.intro .ibar{position:absolute;bottom:0;left:0;height:2px;width:0;background:var(--accent,#fff)}
+
+/* ---- reveal primitives (transform/opacity only) ---- */
+[data-reveal]{opacity:0;transform:translateY(26px)}
+[data-reveal].in{opacity:1;transform:none;transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1.1s cubic-bezier(.16,1,.3,1)}
+.split-line{display:block;overflow:hidden}
+.split-line>span{display:block;transform:translateY(110%);transition:transform 1s cubic-bezier(.16,1,.3,1)}
+.split-line.in>span{transform:none}
+
+/* ---- scrub stage (transformation flipbook) ---- */
+.stage{position:relative}
+.stage .pin{position:sticky;top:0;height:100vh;overflow:hidden}
+.stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+
+/* ---- animated footer FX: aurora glow + drifting dots (theme-aware via --accent) ---- */
+footer{position:relative;overflow:hidden}
+.footfx{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.footfx .aurora{position:absolute;left:-15%;right:-15%;bottom:-70%;height:230%;
+  background:radial-gradient(46% 64% at 28% 100%,var(--accent),transparent 66%),radial-gradient(40% 56% at 72% 100%,var(--accent),transparent 66%);
+  filter:blur(52px);opacity:.5;animation:auroraDrift 16s ease-in-out infinite}
+@keyframes auroraDrift{0%,100%{transform:translateX(-4%) scaleY(1)}50%{transform:translateX(4%) scaleY(1.18)}}
+.footfx .dot{position:absolute;bottom:6px;width:4px;height:4px;border-radius:50%;background:var(--accent);opacity:0;box-shadow:0 0 10px var(--accent);animation:dotRise linear infinite}
+@keyframes dotRise{0%{transform:translateY(0) scale(.4);opacity:0}15%{opacity:.9}85%{opacity:.6}100%{transform:translateY(-88px) scale(1);opacity:0}}
+footer>*{position:relative;z-index:1;width:100%}
+
+/* utility */
+.u-hide{opacity:0}
