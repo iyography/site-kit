@@ -333,7 +333,7 @@ ${s.hstrip ? '' : `<!-- feature 2 (image 2) -->
   if(stageEl){
     const hwm=document.getElementById('hwm'),hint=document.getElementById('hint');
     const caps=[...document.querySelectorAll('#stage .hcap')];
-    CCC.scrub(stageEl,'assets/frames',{idle:true,onProgress:p=>{
+    CCC.scrub(stageEl,'assets/frames',{idle:true,amp:${s.amp||3},onProgress:p=>{
       hwm.style.opacity=p<0.18?1:Math.max(0,1-(p-0.18)/0.12);
       hwm.style.transform=\`translate(-50%,calc(-50% - \${p*60}px))\`;
       hint.style.opacity=p>0.04?0:.7;

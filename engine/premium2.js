@@ -10,6 +10,7 @@
   // ---- inject grain + cursor + progress ----
   function el(c){const e=D.createElement('div');e.className=c;return e;}
   if(!D.querySelector('.grain'))D.body.appendChild(el('grain'));
+  if(!D.querySelector('.grade'))D.body.appendChild(el('grade'));   // cinematic color-grade / vignette
   const prog=el('sprog');D.body.appendChild(prog);
   let cur,curR;
   if(matchMedia('(hover:hover)').matches){
@@ -46,8 +47,10 @@
   // ---- scroll progress ----
   addEventListener('scroll',()=>{const h=D.documentElement.scrollHeight-innerHeight;prog.style.width=(h>0?scrollY/h*100:0)+'%';},{passive:true});
 
-  // ---- SplitType line reveals for [data-split] ----
-  if(window.SplitType){
+  // ---- SplitType line reveals for [data-split] (auto-applied to big headings) ----
+  if(window.SplitType && !reduce){
+    ['.thesis h2','.feat h3','.reserve h2','.midband .mbcap h2','.plate .pq p','.rows .row h3']
+      .forEach(sel=>D.querySelectorAll(sel).forEach(h=>{if(!h.hasAttribute('data-split'))h.setAttribute('data-split','');}));
     D.querySelectorAll('[data-split]').forEach(node=>{
       const s=new SplitType(node,{types:'lines',lineClass:'split-line'});
       s.lines.forEach(l=>{const span=D.createElement('span');while(l.firstChild)span.appendChild(l.firstChild);l.appendChild(span);});
@@ -97,8 +100,14 @@
     function tick(t){if(ready){let aim=target;if(live&&t-lastScroll>140){aim=target+amp+Math.sin(t/1500)*amp;}cur+=(aim-cur)*0.1;draw(cur);}requestAnimationFrame(tick);}
     addEventListener('resize',resize);addEventListener('scroll',onScroll,{passive:true});
     requestAnimationFrame(tick);
-    fetch(framesPath+'/manifest.json').then(r=>r.json()).then(m=>{N=m.count;iw=m.w||1280;ih=m.h||720;let ld=0;
-      for(let i=1;i<=N;i++){const img=new Image();img.onload=()=>{ld++;if(ld>=Math.min(N,8)){ready=true;resize();onScroll();}};img.src=framesPath+'/'+String(i).padStart(4,'0')+'.jpg';frames[i-1]=img;}
+    fetch(framesPath+'/manifest.json').then(r=>r.json()).then(m=>{N=m.count;iw=m.w||1280;ih=m.h||720;
+      const ext=m.ext||'jpg';                       // WebP if the manifest says so
+      frames=new Array(N); let ld=0;
+      // checkpoint-priority order: ends + middle + quarters first (scrubbable fast), then fill
+      const order=[], seen=new Set();
+      [0,N-1,N>>1,N>>2,(3*N)>>2].forEach(i=>{if(i>=0&&i<N&&!seen.has(i)){seen.add(i);order.push(i);}});
+      for(let i=0;i<N;i++)if(!seen.has(i)){seen.add(i);order.push(i);}
+      order.forEach(idx=>{const img=new Image();img.onload=()=>{ld++;if(ld>=Math.min(N,5)){ready=true;resize();onScroll();}};img.src=framesPath+'/'+String(idx+1).padStart(4,'0')+'.'+ext;frames[idx]=img;});
     }).catch(()=>{});
     return {refresh:onScroll};
   };
