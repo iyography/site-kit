@@ -170,7 +170,7 @@ export const page = (s) => `<!DOCTYPE html><html lang="en"><head>
 <title>${s.wm} — ${s.concept}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=${s.font}&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../_shared/premium2.css">
+<link rel="stylesheet" href="_shared/premium2.css">
 <style>
   :root{--bg:${s.bg};--ink:${s.ink};--muted:${s.muted};--accent:${s.accent};--hair:color-mix(in oklch,var(--ink) 12%,transparent);--disp:${s.disp};--sans:${s.sans}}
   body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:300;-webkit-font-smoothing:antialiased;line-height:1.62;overflow-x:hidden}
@@ -327,7 +327,7 @@ ${s.hstrip ? '' : `<!-- feature 2 (image 2) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
 <script src="https://unpkg.com/split-type@0.3.4/umd/index.min.js"></script>
-<script src="../_shared/premium2.js"></script>
+<script src="_shared/premium2.js"></script>
 <script>
   const stageEl=document.getElementById('stage');
   if(stageEl){

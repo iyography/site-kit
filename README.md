@@ -13,14 +13,20 @@ The manual way:
 
 # 2. Render your 2 videos + 3 images (needs a fal.ai key):
 FAL_KEY=your_key node render.mjs
-#    ...or skip rendering and drop a matching set from stock/ into work/<slug>/.
+#    ...or no key? use a stock set:  ./use-stock.sh warm <your-slug>
 
 # 3. Build:
 ./build.sh
 
-# 4. Serve and open:
+# 4. Preview:
 cd dist && python3 -m http.server 8000   # then open /<slug>/
+
+# 5. Ship it live (one command):
+./deploy.sh
 ```
+
+### Hosting: no Cloudinary, no third-party media host
+Your built site lives in `dist/<slug>/` and is **fully self-contained** — the HTML, the engine, and every video and image are in that one folder. It deploys like any static site: `./deploy.sh` pushes it to Vercel, or drag the folder onto [Netlify Drop](https://app.netlify.com/drop). The videos play because they ship right next to the page.
 
 ## What's in here
 
